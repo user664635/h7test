@@ -1,2 +1,2 @@
 CompileFlags:
-  Add: [-std=c++2c, -Wall, -I../include/]
+  Add: [-std=gnu2y, -Wall, -I../include/]

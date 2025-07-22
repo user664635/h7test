@@ -9,11 +9,12 @@ typedef uint32_t u32;
 #define iser sfr(0xe000e100)
 #define halt while (1)
 [[noreturn]] void reset() {
-  rcc[10] = 2;
-  rcc[12] = 4;
-  *rcc = 0x01010001;
+  rcc[10] = 0x02020202;
+  rcc[12] = 0x01010208;
+  *rcc = 0x03010001;
+  while (!(*rcc >> 25))
+    ;
   rcc[4] = 3;
-
 
   rcc[0x38] = -1;
   rcc[0x3a] = 1;
@@ -42,5 +43,4 @@ void tim2_int() {
   gpiob[5] ^= -1;
 }
 [[gnu::section(".text.ivt"), gnu::used]] void (*const ivt[])(void) = {
-    stack_top,      reset,          nmi, hardfault, busfault, usagefault,
-    [15] = systick, [44] = tim2_int};
+    stack_top, reset, reset, reset, [15] = systick, [44] = tim2_int};

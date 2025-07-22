@@ -1,4 +1,4 @@
-ARCH = -target armv7m-none-eabi -mthumb -mcpu=cortex-m7 -flto
+ARCH = -target armv7m-none-eabi -mcpu=cortex-m7 -flto
 CC = clang
 CXX = clang
 FLAGS = $(ARCH) -O3 -Wall -MMD -MP -Iinc/ -ffreestanding -fno-exceptions -fno-unwind-tables -ffixed-point
@@ -21,8 +21,6 @@ all: $(TARGET).bin
 
 build: $(TARGET).bin
 
-asm: $(OBJS:.o=.s)
-
 $(TARGET).bin: $(TARGET).elf
 	llvm-objcopy -O binary $< $@
 
@@ -35,16 +33,10 @@ obj/%.o: src/%.cpp
 obj/%.o: src/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-obj/%.s: src/%.cpp
-	$(CXX) $(CXXFLAGS) -S $< -o $@
-
-obj/%.s: src/%.c
-	$(CC) $(CFLAGS) -S $< -o $@
-
 -include $(DEPS)
 
 clean:
 	rm -rf obj/*
 
-.PHONY: all asm build clean
+.PHONY: all build clean
 

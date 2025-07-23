@@ -10,8 +10,9 @@ typedef uint32_t u32;
 #define halt while (1)
 [[noreturn]] void reset() {
   rcc[10] = 0x02020202;
+  rcc[11] = 0x01ff0080;
   rcc[12] = 0x01010208;
-  *rcc = 0x03010001;
+  *rcc = 0x01010001;
   while (!(*rcc >> 25))
     ;
   rcc[4] = 3;

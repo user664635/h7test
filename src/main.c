@@ -8,13 +8,11 @@ typedef uint32_t u32;
 #define syst sfr(0xe000e010)
 #define iser sfr(0xe000e100)
 #define halt while (1)
-[[noreturn]] void reset() {
-  rcc[10] = 0x02020202;
-  rcc[11] = 0x01ff0080;
-  rcc[12] = 0x01010208;
+void reset() {
+  rcc[10] = 0x02020080;
+  rcc[11] = 0x01ff000d;
+  rcc[12] = 0x0301024f;
   *rcc = 0x01010001;
-  while (!(*rcc >> 25))
-    ;
   rcc[4] = 3;
 
   rcc[0x38] = -1;
@@ -25,7 +23,7 @@ typedef uint32_t u32;
   syst[0] = 5;
 
   tim2[10] = 0;
-  tim2[11] = 32e6;
+  tim2[11] = 160e6;
   *tim2 = 1;
   tim2[3] = 1;
   iser[0] = 1 << 28;
